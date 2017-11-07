@@ -1,10 +1,7 @@
 package com.company;
 
 
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
+import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import static org.quartz.JobBuilder.newJob;
@@ -19,6 +16,8 @@ public class Main {
 
         consumer consumer = new consumer();
         consumer.run();
+
+
         try {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
         JobDetail job = newJob(InsertToScraperQue.class)
