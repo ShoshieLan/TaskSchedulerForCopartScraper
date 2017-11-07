@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class Utilities {
 
-    public static JsonNode mapJsonToMessage(byte[] bytes) {
+    public static JsonNode mapJsonToMessage(byte[] message) {
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -20,7 +20,7 @@ public class Utilities {
         JsonParser parser = null;
         JsonNode node = null;
         try {
-            parser = factory.createParser(new String(bytes));
+            parser = factory.createParser(new String(message));
             node = mapper.readTree(parser);
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,5 +28,7 @@ public class Utilities {
         return node;
 
     }
+
+
 
 }

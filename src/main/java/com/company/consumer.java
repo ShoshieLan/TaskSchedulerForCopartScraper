@@ -12,12 +12,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.company.Utilities.mapJsonToMessage;
+import static com.company.Publisher.publishToQueue;
 
 /**
  * Created by slan on 10/19/2017.
  */
-public class consumer implements Consumer ,Runnable
-{
+public class consumer implements Consumer, Runnable {
+    public static ArrayList<String>  CurrentLotNumbers = new ArrayList<>();
+
     public void handleConsumeOk(String s) {
 
     }
@@ -40,70 +42,62 @@ public class consumer implements Consumer ,Runnable
 
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
 
-        ArrayList<String> CurrentLotNumbers = new ArrayList<>();
+
         byte[] body = bytes;
 
-        String byteToString = new String(body, "UTF-8");
+        //String byteToString = new String(body, "UTF-8");
 
-        JsonNode json = mapJsonToMessage(bytes);
+        JsonNode json = mapJsonToMessage(body);
+        //System.out.println(json);
 
-
-        if (byteToString == "Null"){
-            System.out.println("There was a null error in the key " + byteToString);
-        }
-        else {
+        if (json.toString().equals("Null")) {
+            System.out.println("There was a null error in the key " + json.toString());
+        } else {
             String status = json.get("CopartStatus").asText();
-            if (status == "Status-TRANSTART"){
-            String lotnumber = json.get("LotNumber").asText();
-            if (lotnumber == "NULL"){
-                System.out.println("lotnumbe was null " + byteToString);
-                //executeJob.func();
-            }
-            else {
-                //start task
-                CurrentLotNumbers.add(lotnumber);
-                System.out.println(lotnumber + " " + status +" " + "start task");
-            }
-            }
-            else if (status == "Status-TRANSTARTMAN"){
-                String lotnumber = json.get("LotNumber").asText();
-                if (lotnumber == "NULL"){
-                    System.out.println("lotnumbe was null " + byteToString);
-                }
-                else {
+            //System.out.println(status.getClass().getName());
+            System.out.println(status);
+            if (status.equals("Status-TRANSTART")) {
+                String lotnumber = json.get("LotNumber").toString();
+                if (lotnumber.equals("Null")) {
+                    System.out.println("lotnumber was null " + json.toString());
+                } else {
                     CurrentLotNumbers.add(lotnumber);
-                    System.out.println(lotnumber + " " + status +" " + "start task");
-
+                    System.out.println(lotnumber + " " + status + " " + "start task");
                 }
-            }
-            else if (status == "Status-SETTLEMENTCMP"){
-                String lotnumber = json.get("LotNumber").asText();
-                if (lotnumber == "NULL"){
-                    System.out.println("lotnumbe was null " + byteToString);
+            } else if (status.equals("Status-TRANSTARTMAN")) {
+                String lotnumber = json.get("LotNumber").toString();
+                if (lotnumber.equals("NULL")) {
+                    System.out.println("lotnumber was null " + json.toString());
+                } else {
+                    CurrentLotNumbers.add(lotnumber);
+                    System.out.println(lotnumber + " " + status + " " + "start task");
                 }
-                else {
+            } else if (status.equals("Status-SETTLEMENTCMP")) {
+                String lotnumber = json.get("LotNumber").toString();
+                if (lotnumber.equals("NULL")) {
+                    System.out.println("lotnumber was null " + json.toString());
+                } else {
                     CurrentLotNumbers.remove(lotnumber);
-                    System.out.println(lotnumber + " " + status +" " + "stop task");
+                    System.out.println(lotnumber + " " + status + " " + "stop task");
                 }
-            }
-            else {
-                System.out.println(status);
+            } else {
+                System.out.println(status + " after if else");
             }
 
         }
 
+    }
 
-
-
-
-
-
-
-
+    public static ArrayList<String> getCurrentLotNumbers() {
+        return CurrentLotNumbers;
     }
 
     @Override
     public void run() {
+        Consume();
+    }
+
+    public void Consume() {
         try {
             connectionrm.getChannel().basicConsume("EVENT_GET_COPART_NOTES", true, this);
         } catch (IOException e) {

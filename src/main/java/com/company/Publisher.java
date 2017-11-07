@@ -8,7 +8,7 @@ import java.io.IOException;
 public class Publisher {
 
     public static void publishToQueue(String routingkey, String job) {
-        System.out.println("publishing to queue");
+        //System.out.println("publishing to queue");
         try {
 
             connectionrm.getChannel().basicPublish("amq.direct", routingkey, null, job.getBytes());

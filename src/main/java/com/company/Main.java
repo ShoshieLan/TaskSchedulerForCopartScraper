@@ -7,7 +7,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
-import com.company.consumer.*;
+
 
 
 public class Main {
@@ -15,8 +15,8 @@ public class Main {
     public static void main(String[] args) {
 
         consumer consumer = new consumer();
-        consumer.run();
-
+        Thread thread = new Thread(consumer);
+        thread.start();
 
         try {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
@@ -35,5 +35,8 @@ public class Main {
     } catch (SchedulerException e) {
         e.printStackTrace();
     }
+
+
+
     }
 }
