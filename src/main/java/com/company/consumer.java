@@ -10,6 +10,7 @@ import com.rabbitmq.client.ShutdownSignalException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static com.company.Utilities.mapJsonToMessage;
 import static com.company.Publisher.publishToQueue;
@@ -44,41 +45,53 @@ public class consumer implements Consumer, Runnable {
 
 
         byte[] body = bytes;
-
+        System.out.println(body);
         //String byteToString = new String(body, "UTF-8");
 
         JsonNode json = mapJsonToMessage(body);
-        //System.out.println(json);
+        System.out.println(json.toString());
 
-        if (json.toString().equals("Null")) {
+        if (json.isNull()) {
             System.out.println("There was a null error in the key " + json.toString());
         } else {
-            String status = json.get("CopartStatus").asText();
+            String status = json.get("CopartStatus").toString();
             //System.out.println(status.getClass().getName());
             System.out.println(status);
-            if (status.equals("Status-TRANSTART")) {
+            if (status.equals("\"Status-TRANSTART\"")) {
                 String lotnumber = json.get("LotNumber").toString();
-                if (lotnumber.equals("Null")) {
+                if (lotnumber.equals("\"Null\"")) {
                     System.out.println("lotnumber was null " + json.toString());
                 } else {
-                    CurrentLotNumbers.add(lotnumber);
-                    System.out.println(lotnumber + " " + status + " " + "start task");
+                    if(!CurrentLotNumbers.contains(lotnumber)){
+                        CurrentLotNumbers.add(lotnumber);
+                        System.out.println(lotnumber + " " + status + " " + "start task");
+                    }
                 }
-            } else if (status.equals("Status-TRANSTARTMAN")) {
+            } else if (status.equals("\"Status-TRANSTARTMAN\"")) {
                 String lotnumber = json.get("LotNumber").toString();
-                if (lotnumber.equals("NULL")) {
+                if (lotnumber.equals("\"NULL\"")) {
                     System.out.println("lotnumber was null " + json.toString());
                 } else {
-                    CurrentLotNumbers.add(lotnumber);
-                    System.out.println(lotnumber + " " + status + " " + "start task");
+                    if(!CurrentLotNumbers.contains(lotnumber)){
+                        CurrentLotNumbers.add(lotnumber);
+                        System.out.println(lotnumber + " " + status + " " + "start task");
+                    }
                 }
-            } else if (status.equals("Status-SETTLEMENTCMP")) {
+            } else if (status.equals("\"Status-SETTLEMENTCMP\"")) {
                 String lotnumber = json.get("LotNumber").toString();
-                if (lotnumber.equals("NULL")) {
+                if (lotnumber.equals("\"NULL\"")) {
                     System.out.println("lotnumber was null " + json.toString());
                 } else {
-                    CurrentLotNumbers.remove(lotnumber);
-                    System.out.println(lotnumber + " " + status + " " + "stop task");
+
+                    Iterator iterator = CurrentLotNumbers.iterator();
+                    while(iterator.hasNext()){
+                        Object arraylot=iterator.next();
+                        if(arraylot.equals(lotnumber)){
+                            iterator.remove();
+                            System.out.println(lotnumber + " " + status + " " + "stop task");
+                        }
+                    }
+
                 }
             } else {
                 System.out.println(status + " after if else");
