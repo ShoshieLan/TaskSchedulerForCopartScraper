@@ -44,7 +44,7 @@ public class consumer implements Consumer, Runnable {
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
 
 
-        byte[] body = bytes;
+       /* byte[] body = bytes;
         System.out.println(body);
         //String byteToString = new String(body, "UTF-8");
 
@@ -98,7 +98,7 @@ public class consumer implements Consumer, Runnable {
             }
 
         }
-
+*/
     }
 
     public static ArrayList<String> getCurrentLotNumbers() {

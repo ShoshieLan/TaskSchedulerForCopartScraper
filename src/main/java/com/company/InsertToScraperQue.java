@@ -3,21 +3,13 @@ package com.company;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-
 import static com.company.Publisher.publishToQueue;
-
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
+import com.company.Utilities;
 
 
 /**
@@ -27,7 +19,7 @@ import java.util.Iterator;
 public class InsertToScraperQue implements Job {
 
 
-
+        private static String date = DateUtils.getCurrDateTimeStr();
         //private consumer list = new consumer();
         ArrayList<String> list = consumer.getCurrentLotNumbers();
 
@@ -70,16 +62,23 @@ public class InsertToScraperQue implements Job {
         catch(SQLException err){
             System.out.println(err.getMessage());
         }
+
+
+
+
         // publish the lotnumbers in the array to que
         //truncate db table add lot numbers
         //String timeStampfinal = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        LocalDateTime timestamp = LocalDateTime.now().minusMinutes(30);
+        //LocalDateTime timestamp = LocalDateTime.now().minusMinutes(30);
         //System.out.println(timestamp);
-        String finaltimestamp = LocalDateTime.now().minusMinutes(30).format(DateTimeFormatter.ofPattern("MM/dd/yy HH:mm:ss"));
-
+        //LocalDateTime localDateTime = LocalDateTime.now(Clock.system("IET"));//.minusMinutes(30);
+        //String finaltimestamp = LocalDateTime.now().minusMinutes(30).format(DateTimeFormatter.ofPattern("MM/dd/yy HH:mm:ss"));
+        //System.out.println("final timestamp " + finaltimestamp);
         //DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
         //String finaltimestamp = dateFormat.format(timestamp);
+        //ZonedDateTime localDateTime = ZonedDateTime.now(ZoneId.of("America/NewYork"));//.format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss"));
 
+        System.out.println("current time " + date);
         if (list != null) {
             System.out.println(list);
 
@@ -87,8 +86,8 @@ public class InsertToScraperQue implements Job {
             while(i.hasNext()){
                 Object element = i.next();
             //for (Iterator<String> i = list.iterator(); i.hasNext(); ) {
-                publishToQueue("celery", element  + "," + finaltimestamp);
-                System.out.println(element + " "  + finaltimestamp);
+                publishToQueue("celery", element  + "," + date);
+                System.out.println(element + " "  + date);
                 System.out.println("you made it here");
             }
         }
