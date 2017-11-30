@@ -64,20 +64,6 @@ public class InsertToScraperQue implements Job {
         }
 
 
-
-
-        // publish the lotnumbers in the array to que
-        //truncate db table add lot numbers
-        //String timeStampfinal = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        //LocalDateTime timestamp = LocalDateTime.now().minusMinutes(30);
-        //System.out.println(timestamp);
-        //LocalDateTime localDateTime = LocalDateTime.now(Clock.system("IET"));//.minusMinutes(30);
-        //String finaltimestamp = LocalDateTime.now().minusMinutes(30).format(DateTimeFormatter.ofPattern("MM/dd/yy HH:mm:ss"));
-        //System.out.println("final timestamp " + finaltimestamp);
-        //DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-        //String finaltimestamp = dateFormat.format(timestamp);
-        //ZonedDateTime localDateTime = ZonedDateTime.now(ZoneId.of("America/NewYork"));//.format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss"));
-
         System.out.println("current time " + date);
         if (list != null) {
             System.out.println(list);
