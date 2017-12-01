@@ -1,15 +1,14 @@
 package com.company;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
+
+import static com.company.DateUtils.getCurrentDateMinus30Min;
 import static com.company.Publisher.publishToQueue;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.company.Utilities;
+
 
 
 /**
@@ -19,7 +18,7 @@ import com.company.Utilities;
 public class InsertToScraperQue implements Job {
 
 
-        private static String date = DateUtils.getCurrDateTimeStr();
+        //private static String date = DateUtils.getCurrDateTimeStr();
         //private consumer list = new consumer();
         ArrayList<String> list = consumer.getCurrentLotNumbers();
 
@@ -41,10 +40,18 @@ public class InsertToScraperQue implements Job {
         }
         // Connection con = DriverManager.getConnection(host, username, password);
             Statement statement = conn.createStatement();
+            if (list == null) {
+                //todo grab from table insert to arraylist
+                ResultSet rs = statement.executeQuery("Select * from ArrayListBackupForCopartNotes");
 
-            statement.executeUpdate("Truncate table ArrayListBackupForCopartNotes");
-            System.out.println("truncated the table");
+                while (rs.next()){
 
+                    list.add(String.valueOf(rs));
+                    System.out.println(list);
+                }
+                statement.executeUpdate("Truncate table ArrayListBackupForCopartNotes");
+                System.out.println("truncated the table");
+            }
             Iterator i = list.iterator();
             while(i.hasNext()){
                 Object element = i.next();
@@ -64,7 +71,7 @@ public class InsertToScraperQue implements Job {
         }
 
 
-        System.out.println("current time " + date);
+        System.out.println("thirty min ago " + getCurrentDateMinus30Min());
         if (list != null) {
             System.out.println(list);
 
@@ -72,8 +79,8 @@ public class InsertToScraperQue implements Job {
             while(i.hasNext()){
                 Object element = i.next();
             //for (Iterator<String> i = list.iterator(); i.hasNext(); ) {
-                publishToQueue("celery", element  + "," + date);
-                System.out.println(element + " "  + date);
+                publishToQueue("celery", element  + "," + getCurrentDateMinus30Min());
+                System.out.println(element + " "  + getCurrentDateMinus30Min());
                 System.out.println("you made it here");
             }
         }
