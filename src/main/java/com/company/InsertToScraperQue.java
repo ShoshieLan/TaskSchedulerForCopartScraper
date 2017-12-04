@@ -26,18 +26,45 @@ public class InsertToScraperQue implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
-
-        sqlGetResult("Truncate table ArrayListBackupForCopartNotes");
+        //ResultSet rs = sqlGetResult("Select * from ArrayListBackupForCopartNotes");
         System.out.println("thirty min ago " + getCurrentDateMinus30Min());
-        if (list != null) {
+
+        if (list == null) {
+            ResultSet rs3 = sqlGetResult("Select * from ArrayListBackupForCopartNotes");
+            try {
+                while (rs3.next()) {
+
+                    list.add(String.valueOf(rs3));
+                    System.out.println(list);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             System.out.println(list);
-            Iterator i = list.iterator();
-            while (i.hasNext()) {
-                Object element = i.next();
-                //for (Iterator<String> i = list.iterator(); i.hasNext(); ) {
-                publishToQueue("celery", element + "," + getCurrentDateMinus30Min());
-                System.out.println(element + " " + getCurrentDateMinus30Min());
-                System.out.println("you made it here");
+
+
+            if (list != null) {
+                list.clear();
+                ResultSet rs = sqlGetResult("Select * from ArrayListBackupForCopartNotes");
+                try {
+                    while (rs.next()) {
+
+                        list.add(String.valueOf(rs));
+                        System.out.println(list);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(list);
+                ResultSet rs2 = sqlGetResult("Truncate table ArrayListBackupForCopartNotes");
+                Iterator i = list.iterator();
+                while (i.hasNext()) {
+                    Object element = i.next();
+                    //for (Iterator<String> i = list.iterator(); i.hasNext(); ) {
+                    publishToQueue("celery", element + "," + getCurrentDateMinus30Min());
+                    System.out.println(element + " " + getCurrentDateMinus30Min());
+                    System.out.println("you made it here");
+                }
             }
         }
     }

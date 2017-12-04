@@ -68,7 +68,7 @@ public class consumer implements Consumer, Runnable {
                 } else {
                     if(!CurrentLotNumbers.contains(lotnumber)){
                         CurrentLotNumbers.add(lotnumber);
-                        sqlGetResult("INSERT INTO ArrayListBackupForCopartNotes  Values(lotnumber)");
+                        sqlGetResult("INSERT INTO ArrayListBackupForCopartNotes  Values('"+ lotnumber +"')");
                         System.out.println(lotnumber + " " + status + " " + "start task");
                     }
                 }
@@ -79,7 +79,7 @@ public class consumer implements Consumer, Runnable {
                 } else {
                     if(!CurrentLotNumbers.contains(lotnumber)){
                         CurrentLotNumbers.add(lotnumber);
-                        sqlGetResult("INSERT INTO ArrayListBackupForCopartNotes  Values(" +lotnumber+")");
+                        sqlGetResult("INSERT INTO ArrayListBackupForCopartNotes  Values('"+ lotnumber +"')");
                         System.out.println(lotnumber + " " + status + " " + "start task");
                     }
                 }
