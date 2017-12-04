@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import static com.company.Utilities.mapJsonToMessage;
 import static com.company.Publisher.publishToQueue;
 import static com.company.SqlUtilityConnection.*;
@@ -21,7 +20,8 @@ import static com.company.SqlUtilityConnection.*;
  * Created by slan on 10/19/2017.
  */
 public class consumer implements Consumer, Runnable {
-    public static ArrayList<String>  CurrentLotNumbers = new ArrayList<>();
+
+    private static ArrayList<String> list = new ArrayList<String>();
 
     public void handleConsumeOk(String s) {
 
@@ -66,9 +66,9 @@ public class consumer implements Consumer, Runnable {
                 if (lotnumber.equals("\"Null\"")) {
                     System.out.println("lotnumber was null " + json.toString());
                 } else {
-                    if(!CurrentLotNumbers.contains(lotnumber)){
-                        CurrentLotNumbers.add(lotnumber);
-                        sqlGetResult("INSERT INTO ArrayListBackupForCopartNotes  Values('"+ lotnumber +"')");
+                    if(!list.contains(lotnumber)){
+                        list.add(lotnumber);
+                        sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes  Values('"+ lotnumber +"')");
                         System.out.println(lotnumber + " " + status + " " + "start task");
                     }
                 }
@@ -77,9 +77,9 @@ public class consumer implements Consumer, Runnable {
                 if (lotnumber.equals("\"NULL\"")) {
                     System.out.println("lotnumber was null " + json.toString());
                 } else {
-                    if(!CurrentLotNumbers.contains(lotnumber)){
-                        CurrentLotNumbers.add(lotnumber);
-                        sqlGetResult("INSERT INTO ArrayListBackupForCopartNotes  Values('"+ lotnumber +"')");
+                    if(!list.contains(lotnumber)){
+                        list.add(lotnumber);
+                        sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes  Values('"+ lotnumber +"')");
                         System.out.println(lotnumber + " " + status + " " + "start task");
                     }
                 }
@@ -89,12 +89,12 @@ public class consumer implements Consumer, Runnable {
                     System.out.println("lotnumber was null " + json.toString());
                 } else {
 
-                    Iterator iterator = CurrentLotNumbers.iterator();
+                    Iterator iterator = list.iterator();
                     while(iterator.hasNext()){
                         Object arraylot=iterator.next();
                         if(arraylot.equals(lotnumber)){
                             iterator.remove();
-                            sqlGetResult("Delete from ArrayListBackupForCopartNotes where lotnumber = " + lotnumber);
+                            sqlQueryUpdate("Delete from ArrayListBackupForCopartNotes where lotnumber = " + lotnumber);
                             System.out.println(lotnumber + " " + status + " " + "stop task");
                         }
                     }
@@ -107,20 +107,7 @@ public class consumer implements Consumer, Runnable {
 
     }
 
-    public static ArrayList<String> getCurrentLotNumbers() {
-        ResultSet s = sqlGetResult("Select * from ArrayListBackupForCopartNotes");
-        CurrentLotNumbers.clear();
-        try {
-            while (s.next()){
-                CurrentLotNumbers.add(String.valueOf(s));
-                System.out.println(CurrentLotNumbers);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        return CurrentLotNumbers;
-    }
 
     @Override
     public void run() {

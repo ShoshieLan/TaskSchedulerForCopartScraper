@@ -11,17 +11,34 @@ import java.util.function.Consumer;
 public class SqlUtilityConnection {
 
 
-    ArrayList<String> list = consumer.getCurrentLotNumbers();
-    public static void sqlQueryExecute(String query) {
+
+    public static ArrayList<String> list = new ArrayList<String>();
+
+
+    private static ArrayList<String> getCurrentLotNumbers() {
+        ResultSet s = sqlGetResult("Select * from ArrayListBackupForCopartNotes");
+        list.clear();
+        try {
+            while (s.next()){
+                list.add(String.valueOf(s));
+                System.out.println(list);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+
+    public static void sqlQueryExecuteNonQuery(String query) {
 
         Connection conn = null;
         Statement st = null;
-
         try {
             conn = getConn();
             st = conn.createStatement();
             st.executeQuery(query);
-
         }
         catch (SQLException ex) {
             ex.printStackTrace();
@@ -31,7 +48,6 @@ public class SqlUtilityConnection {
             try {
                 if (st != null) {
                     st.close();
-
                 }
                 if (conn != null) {
                     conn.close();
@@ -44,7 +60,10 @@ public class SqlUtilityConnection {
 
     }
 
+
     public static Connection getConn() {
+
+
                 String db_connect_string = "jdbc:jtds:sqlserver://oorah-admire03:1433/AdmireTempData/";
                 Connection conn = null;
                 try {
@@ -62,14 +81,13 @@ public class SqlUtilityConnection {
         //String select = "Select * from ArrayListBackupForCopartNotes";
         //String truncate = "Truncate * from ArrayListBackupForCopartNotes";
 
-    public static void sqlQueryUpdate(String query, String catalog) {
+    public static void sqlQueryUpdate(String query) {
         Connection conn = null;
         Statement st = null;
+
         try {
             conn = getConn();
-            conn.setCatalog(catalog);
             st = conn.createStatement();
-            System.out.println(query);
             st.executeUpdate(query);
 
         }

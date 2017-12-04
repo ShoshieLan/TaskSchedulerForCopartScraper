@@ -19,10 +19,11 @@ import java.util.Iterator;
 
 public class InsertToScraperQue implements Job {
 
+    private ArrayList<String> list = new ArrayList<String>();
 
     //private static String date = DateUtils.getCurrDateTimeStr();
     //private consumer list = new consumer();
-    ArrayList<String> list = consumer.getCurrentLotNumbers();
+
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
@@ -56,16 +57,18 @@ public class InsertToScraperQue implements Job {
                     e.printStackTrace();
                 }
                 System.out.println(list);
-                ResultSet rs2 = sqlGetResult("Truncate table ArrayListBackupForCopartNotes");
+
                 Iterator i = list.iterator();
                 while (i.hasNext()) {
                     Object element = i.next();
                     //for (Iterator<String> i = list.iterator(); i.hasNext(); ) {
                     publishToQueue("celery", element + "," + getCurrentDateMinus30Min());
                     System.out.println(element + " " + getCurrentDateMinus30Min());
-                    System.out.println("you made it here");
+                    //System.out.println("you made it here");
+
                 }
             }
         }
+        sqlQueryUpdate("Truncate table ArrayListBackupForCopartNotes");
     }
 }
