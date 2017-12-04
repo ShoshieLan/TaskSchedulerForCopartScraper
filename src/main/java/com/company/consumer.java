@@ -9,11 +9,13 @@ import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.ShutdownSignalException;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import static com.company.Utilities.mapJsonToMessage;
 import static com.company.Publisher.publishToQueue;
+import static com.company.SqlUtilityConnection.*;
 
 /**
  * Created by slan on 10/19/2017.
@@ -51,6 +53,8 @@ public class consumer implements Consumer, Runnable {
         JsonNode json = mapJsonToMessage(body);
         System.out.println(json.toString());
 
+
+
         if (json.isNull()) {
             System.out.println("There was a null error in the key " + json.toString());
         } else {
@@ -64,6 +68,7 @@ public class consumer implements Consumer, Runnable {
                 } else {
                     if(!CurrentLotNumbers.contains(lotnumber)){
                         CurrentLotNumbers.add(lotnumber);
+                        sqlGetResult("INSERT INTO ArrayListBackupForCopartNotes  Values(lotnumber)");
                         System.out.println(lotnumber + " " + status + " " + "start task");
                     }
                 }
@@ -74,6 +79,7 @@ public class consumer implements Consumer, Runnable {
                 } else {
                     if(!CurrentLotNumbers.contains(lotnumber)){
                         CurrentLotNumbers.add(lotnumber);
+                        sqlGetResult("INSERT INTO ArrayListBackupForCopartNotes  Values(" +lotnumber+")");
                         System.out.println(lotnumber + " " + status + " " + "start task");
                     }
                 }
@@ -88,6 +94,7 @@ public class consumer implements Consumer, Runnable {
                         Object arraylot=iterator.next();
                         if(arraylot.equals(lotnumber)){
                             iterator.remove();
+                            sqlGetResult("Delete from ArrayListBackupForCopartNotes where lotnumber = " + lotnumber);
                             System.out.println(lotnumber + " " + status + " " + "stop task");
                         }
                     }
@@ -101,6 +108,17 @@ public class consumer implements Consumer, Runnable {
     }
 
     public static ArrayList<String> getCurrentLotNumbers() {
+        ResultSet s = sqlGetResult("Select * from ArrayListBackupForCopartNotes");
+        CurrentLotNumbers.clear();
+        try {
+            while (s.next()){
+                CurrentLotNumbers.add(String.valueOf(s));
+                System.out.println(CurrentLotNumbers);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return CurrentLotNumbers;
     }
 
