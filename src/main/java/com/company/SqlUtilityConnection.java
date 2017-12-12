@@ -12,26 +12,7 @@ public class SqlUtilityConnection {
 
 
 
-    public static ArrayList<String> list = new ArrayList<String>();
-
-
-    private static ArrayList<String> getCurrentLotNumbers() {
-        ResultSet s = sqlGetResult("Select * from ArrayListBackupForCopartNotes");
-        list.clear();
-        try {
-            while (s.next()){
-                list.add(String.valueOf(s));
-                System.out.println(list);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-
-
-    public static void sqlQueryExecuteNonQuery(String query) {
+       public static void sqlQueryExecuteNonQuery(String query) {
 
         Connection conn = null;
         Statement st = null;
@@ -64,7 +45,7 @@ public class SqlUtilityConnection {
     public static Connection getConn() {
 
 
-                String db_connect_string = "jdbc:jtds:sqlserver://oorah-admire03:1433/AdmireTempData/";
+                String db_connect_string = "jdbc:jtds:sqlserver://192.168.1.21:1433/AdmireTempData/";
                 Connection conn = null;
                 try {
 

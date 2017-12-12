@@ -19,43 +19,25 @@ import java.util.Iterator;
 
 public class InsertToScraperQue implements Job {
 
-    private ArrayList<String> list = new ArrayList<String>();
+    private consumer array = new consumer();
 
     //private static String date = DateUtils.getCurrDateTimeStr();
-    //private consumer list = new consumer();
+    //
 
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
-
+        ArrayList<String> list = array.getCurrentLotNumbers();
         System.out.println("thirty min ago " + getCurrentDateMinus30Min());
-
-        if (list != null) {
-            list.clear();
-        }
-                ResultSet rs = sqlGetResult("Select * from ArrayListBackupForCopartNotes");
-                try {
-                    while (rs.next()) {
-
-                        list.add(String.valueOf(rs));
-                        System.out.println(list);
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
                 System.out.println(list);
 
-                Iterator i = list.iterator();
-                while (i.hasNext()) {
-                    Object element = i.next();
-                    //for (Iterator<String> i = list.iterator(); i.hasNext(); ) {
-                    publishToQueue("celery", element + "," + getCurrentDateMinus30Min());
-                    System.out.println(element + " " + getCurrentDateMinus30Min());
+
+                    for(int i = 0; i < list.size(); i++){
+                    publishToQueue("celery", list.get(i) + "," + getCurrentDateMinus30Min());
+                    System.out.println(list.get(i) + " " + getCurrentDateMinus30Min());
                     //System.out.println("you made it here");
-                    sqlQueryUpdate("Truncate table ArrayListBackupForCopartNotes");
                 }
             }
-
         }
 
 

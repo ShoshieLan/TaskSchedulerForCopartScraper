@@ -27,7 +27,7 @@ public class Main {
                 .withIdentity("every 30 min","group1")
                 .startNow()
                 .withSchedule(simpleSchedule()
-                        .withIntervalInMinutes(1).repeatForever()).build();
+                        .withIntervalInMinutes(30).repeatForever()).build();
 
 
         scheduler.scheduleJob(job,trigger);

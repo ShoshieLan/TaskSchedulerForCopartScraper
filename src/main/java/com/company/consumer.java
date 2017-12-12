@@ -21,7 +21,37 @@ import static com.company.SqlUtilityConnection.*;
  */
 public class consumer implements Consumer, Runnable {
 
-    private static ArrayList<String> list = new ArrayList<String>();
+   public  ArrayList<String> list = new ArrayList<>();
+
+
+    public  ArrayList<String> getCurrentLotNumbers() {
+        Connection conn = null;
+        Statement st = null;
+        try {
+            String query = "Select * from ArrayListBackupForCopartNotes";
+            conn = getConn();
+            st = conn.createStatement();
+            ResultSet s = st.executeQuery(query);
+
+            try {
+                while (s.next()) {
+                    if (!list.contains(s.getString(1))) {
+                        list.add(s.getString(1));
+                        System.out.println(list);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //sqlQueryUpdate("Truncate table ArrayListBackupForCopartNotes");
+        return list;
+    }
+   //InsertToScraperQue array = new InsertToScraperQue();
+
 
     public void handleConsumeOk(String s) {
 
