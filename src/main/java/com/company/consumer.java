@@ -91,20 +91,9 @@ public class consumer implements Consumer, Runnable {
             String status = json.get("CopartStatus").toString();
             //System.out.println(status.getClass().getName());
             System.out.println(status);
-            if (status.equals("\"Status-TRANSTART\"")) {
+            if (status.equals("\"Status-TRANSTART\"") || status.equals("\"Status-TRANSTARTMAN\"") ) {
                 String lotnumber = json.get("LotNumber").toString();
                 if (lotnumber.equals("\"Null\"")) {
-                    System.out.println("lotnumber was null " + json.toString());
-                } else {
-                    if(!list.contains(lotnumber)){
-                        list.add(lotnumber);
-                        sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes  Values('"+ lotnumber +"')");
-                        System.out.println(lotnumber + " " + status + " " + "start task");
-                    }
-                }
-            } else if (status.equals("\"Status-TRANSTARTMAN\"")) {
-                String lotnumber = json.get("LotNumber").toString();
-                if (lotnumber.equals("\"NULL\"")) {
                     System.out.println("lotnumber was null " + json.toString());
                 } else {
                     if(!list.contains(lotnumber)){
