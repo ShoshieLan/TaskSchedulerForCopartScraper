@@ -10,7 +10,7 @@ public class Publisher {
     public static void publishToQueue(String routingkey, String job) {
         try {
 
-            connectionrm.getChannel().basicPublish("amq.direct", routingkey, null, job.getBytes());
+            connectionrm.getPublisherChannel().basicPublish("amq.direct", routingkey, null, job.getBytes());
         }
         catch (IOException e) {
             e.printStackTrace();

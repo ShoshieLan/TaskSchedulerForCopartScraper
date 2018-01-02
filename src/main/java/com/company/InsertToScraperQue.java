@@ -19,23 +19,14 @@ import java.util.Iterator;
 
 public class InsertToScraperQue implements Job {
 
-    private consumer array = new consumer();
-
-    //private static String date = DateUtils.getCurrDateTimeStr();
-    //
 
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
+        consumer array = new consumer();
         ArrayList<String> list = array.getCurrentLotNumbers();
-        System.out.println("thirty min ago " + getCurrentDateMinus30Min());
-                System.out.println(list);
-
-
                     for(int i = 0; i < list.size(); i++){
                     publishToQueue("celery", list.get(i) + "," + getCurrentDateMinus30Min());
-                    System.out.println(list.get(i) + " " + getCurrentDateMinus30Min());
-                    //System.out.println("you made it here");
                 }
             }
         }

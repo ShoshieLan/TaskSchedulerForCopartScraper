@@ -15,31 +15,54 @@ import java.util.concurrent.TimeoutException;
 public class connectionrm {
 
 
-        private static Connection connection = null;
-        private static Channel channel = null;
+    private static Connection publisherConnection = null;
+    private static Channel publisherChannel = null;
+    private static Connection consumerConnection = null;
+    private static Channel consumerChannel = null;
 
-        static {
-            ConnectionFactory factory = new ConnectionFactory();
-            factory.setUsername("yunion");
-            factory.setPassword("421kirby#");
-            factory.setHost("192.168.1.41");
-            factory.setPort(5672);
+    static {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setUsername("yunion");
+        factory.setPassword("421kirby#");
+        factory.setHost("192.168.1.41");
+        factory.setPort(5672);
 
-            try {
-                connection = factory.newConnection();
-                channel = connection.createChannel();
-            }
-            catch (IOException | TimeoutException e) {
-                e.printStackTrace();
-
-            }
+        try {
+            consumerConnection = factory.newConnection();
+            consumerChannel = consumerConnection.createChannel();
+        } catch (IOException | TimeoutException e) {
+            e.printStackTrace();
 
         }
 
-        public static Channel getChannel() {
-
-            return  channel;
-        }
     }
+
+
+    static {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setUsername("yunion");
+        factory.setPassword("421kirby#");
+        factory.setHost("192.168.1.41");
+        factory.setPort(5672);
+
+        try {
+            publisherConnection = factory.newConnection();
+            publisherChannel = publisherConnection.createChannel();
+        } catch (IOException | TimeoutException e) {
+            e.printStackTrace();
+
+        }
+
+    }
+    public static Channel getPublisherChannel() {
+
+        return publisherChannel;
+    }
+
+    public static Channel getConsumerChannel() {
+
+        return consumerChannel;
+    }
+}
 
 
