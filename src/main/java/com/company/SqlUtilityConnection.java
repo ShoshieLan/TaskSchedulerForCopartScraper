@@ -58,9 +58,6 @@ public class SqlUtilityConnection {
                 return conn;
             }
 
-        //String insert = "INSERT INTO ArrayListBackupForCopartNotes  Values('" + element +"')";
-        //String select = "Select * from ArrayListBackupForCopartNotes";
-        //String truncate = "Truncate * from ArrayListBackupForCopartNotes";
 
     public static void sqlQueryUpdate(String query) {
         Connection conn = null;

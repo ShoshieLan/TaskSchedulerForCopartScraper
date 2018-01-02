@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import static com.company.Utilities.mapJsonToMessage;
-import static com.company.Publisher.publishToQueue;
 import static com.company.SqlUtilityConnection.*;
 
 /**
@@ -21,10 +21,10 @@ import static com.company.SqlUtilityConnection.*;
  */
 public class consumer implements Consumer, Runnable {
 
-   public  ArrayList<String> list = new ArrayList<>();
+    public ArrayList<String> list = new ArrayList<>();
 
 
-    public  ArrayList<String> getCurrentLotNumbers() {
+    public ArrayList<String> getCurrentLotNumbers() {
         Connection conn = null;
         Statement st = null;
         try {
@@ -47,10 +47,9 @@ public class consumer implements Consumer, Runnable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //sqlQueryUpdate("Truncate table ArrayListBackupForCopartNotes");
+
         return list;
     }
-   //InsertToScraperQue array = new InsertToScraperQue();
 
 
     public void handleConsumeOk(String s) {
@@ -66,6 +65,7 @@ public class consumer implements Consumer, Runnable {
     }
 
     public void handleShutdownSignal(String s, ShutdownSignalException e) {
+        e.printStackTrace();
 
     }
 
@@ -76,56 +76,42 @@ public class consumer implements Consumer, Runnable {
     public void handleDelivery(String s, Envelope envelope, AMQP.BasicProperties basicProperties, byte[] bytes) throws IOException {
 
 
-       byte[] body = bytes;
-        System.out.println(body);
-        //String byteToString = new String(body, "UTF-8");
-
+        byte[] body = bytes;
         JsonNode json = mapJsonToMessage(body);
-        System.out.println(json.toString());
-
-
 
         if (json.isNull()) {
-            System.out.println("There was a null error in the key " + json.toString());
         } else {
             String status = json.get("CopartStatus").toString();
-            //System.out.println(status.getClass().getName());
-            System.out.println(status);
-            if (status.equals("\"Status-TRANSTART\"") || status.equals("\"Status-TRANSTARTMAN\"") ) {
+            if (status.equals("\"Status-TRANSTART\"") || status.equals("\"Status-TRANSTARTMAN\"")) {
                 String lotnumber = json.get("LotNumber").toString();
                 if (lotnumber.equals("\"Null\"")) {
-                    System.out.println("lotnumber was null " + json.toString());
                 } else {
-                    if(!list.contains(lotnumber)){
+                    if (!list.contains(lotnumber)) {
                         list.add(lotnumber);
-                        sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes  Values('"+ lotnumber +"')");
-                        System.out.println(lotnumber + " " + status + " " + "start task");
+                        sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes  Values('" + lotnumber + "')");
                     }
                 }
             } else if (status.equals("\"Status-SETTLEMENTCMP\"")) {
                 String lotnumber = json.get("LotNumber").toString();
                 if (lotnumber.equals("\"NULL\"")) {
-                    System.out.println("lotnumber was null " + json.toString());
                 } else {
 
                     Iterator iterator = list.iterator();
-                    while(iterator.hasNext()){
-                        Object arraylot=iterator.next();
-                        if(arraylot.equals(lotnumber)){
+                    while (iterator.hasNext()) {
+                        Object arraylot = iterator.next();
+                        if (arraylot.equals(lotnumber)) {
                             iterator.remove();
                             sqlQueryUpdate("Delete from ArrayListBackupForCopartNotes where lotnumber = " + lotnumber);
-                            System.out.println(lotnumber + " " + status + " " + "stop task");
                         }
                     }
                 }
             } else {
-                System.out.println(status + " after if else");
+
             }
 
         }
 
     }
-
 
 
     @Override
