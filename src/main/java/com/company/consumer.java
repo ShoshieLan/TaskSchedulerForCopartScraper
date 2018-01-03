@@ -37,7 +37,6 @@ public class consumer implements Consumer, Runnable {
                 while (s.next()) {
                     if (!list.contains(s.getString(1))) {
                         list.add(s.getString(1));
-                        System.out.println(list);
                     }
                 }
             } catch (SQLException e) {

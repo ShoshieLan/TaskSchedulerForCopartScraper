@@ -20,13 +20,6 @@ public class DateUtils {
             return new SimpleDateFormat(dateFormat);
         }
 
-       /* public static String getDateTimeMinusThirtyStr() {
-            return getDateTimeStr(new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(30)));
-        }
-
-        public static Integer getCurrYear() {
-            return Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date()));
-        }*/
 
         public static String getDateTimeStr(Date date) {
             if (date == null) {
@@ -40,7 +33,6 @@ public class DateUtils {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT-5"));
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date(System.currentTimeMillis()-TimeUnit.MINUTES.toMillis(30)));
-        //return cal.getTime();
         return getDateTimeStr(cal.getTime());
     }
 
