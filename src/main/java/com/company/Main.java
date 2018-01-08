@@ -24,10 +24,10 @@ public class Main {
                 .withIdentity("lotnumber", "group1")
                 .build();
         Trigger trigger = newTrigger().forJob(job)
-                .withIdentity("every 2 hours","group1")
+                .withIdentity("every hour","group1")
                 .startNow()
                 .withSchedule(simpleSchedule()
-                        .withIntervalInMinutes(120).repeatForever()).build();
+                        .withIntervalInMinutes(60).repeatForever()).build();
 
 
         scheduler.scheduleJob(job,trigger);
