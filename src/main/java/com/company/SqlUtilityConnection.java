@@ -1,9 +1,6 @@
 package com.company;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.function.Consumer;
 
 /**
  * Created by slan on 12/4/2017.
@@ -11,8 +8,7 @@ import java.util.function.Consumer;
 public class SqlUtilityConnection {
 
 
-
-       public static void sqlQueryExecuteNonQuery(String query) {
+    public static void sqlQueryExecuteNonQuery(String query) {
 
         Connection conn = null;
         Statement st = null;
@@ -20,11 +16,9 @@ public class SqlUtilityConnection {
             conn = getConn();
             st = conn.createStatement();
             st.executeQuery(query);
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
 
             try {
                 if (st != null) {
@@ -33,8 +27,7 @@ public class SqlUtilityConnection {
                 if (conn != null) {
                     conn.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -45,18 +38,18 @@ public class SqlUtilityConnection {
     public static Connection getConn() {
 
 
-                String db_connect_string = "jdbc:jtds:sqlserver://192.168.1.21:1433/AdmireTempData/";
-                Connection conn = null;
-                try {
+        String db_connect_string = "jdbc:jtds:sqlserver://192.168.1.21:1433/AdmireTempData/";
+        Connection conn = null;
+        try {
 
-                    Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                    conn = DriverManager.getConnection(db_connect_string, "yunion", "421kirby#");
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(db_connect_string, "yunion", "421kirby#");
 
-                } catch (ClassNotFoundException | SQLException e) {
-                    e.printStackTrace();
-                }
-                return conn;
-            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return conn;
+    }
 
 
     public static void sqlQueryUpdate(String query) {
@@ -68,11 +61,9 @@ public class SqlUtilityConnection {
             st = conn.createStatement();
             st.executeUpdate(query);
 
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 if (st != null) {
                     st.close();
@@ -80,8 +71,7 @@ public class SqlUtilityConnection {
                 if (conn != null) {
                     conn.close();
                 }
-            }
-            catch (SQLException ex) {
+            } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
@@ -97,11 +87,9 @@ public class SqlUtilityConnection {
             st = conn.createStatement();
             System.out.println(query);
             rs = st.executeQuery(query);
-        }
-        catch (SQLException ex) {
-           ex.printStackTrace();
-        }
-        finally {
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
             try {
                 if (st != null) {
                     st.close();
@@ -109,20 +97,19 @@ public class SqlUtilityConnection {
                 if (conn != null) {
                     conn.close();
                 }
-            }
-            catch (SQLException ex) {
+            } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
         return rs;
     }
+
     public interface executeJob {
         void func(ResultSet resultSet);
     }
 
 
-
-    }
+}
 
 
 

@@ -2,6 +2,7 @@ package com.company;
 
 
 import java.io.IOException;
+
 /**
  * Created by slan on 11/7/2017.
  */
@@ -11,8 +12,7 @@ public class Publisher {
         try {
 
             connectionrm.getPublisherChannel().basicPublish("amq.direct", routingkey, null, job.getBytes());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

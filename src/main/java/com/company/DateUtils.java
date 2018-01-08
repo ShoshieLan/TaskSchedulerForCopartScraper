@@ -12,28 +12,28 @@ import java.util.concurrent.TimeUnit;
 public class DateUtils {
 
 
-        private static String dateFormat = "MM/dd/yy hh:mm:ss a";
+    private static String dateFormat = "MM/dd/yy hh:mm:ss a";
 
-        // ---------------- Date Functions -----------------
+    // ---------------- Date Functions -----------------
 
-        public static SimpleDateFormat getSimpleDateFormat() {
-            return new SimpleDateFormat(dateFormat);
+    public static SimpleDateFormat getSimpleDateFormat() {
+        return new SimpleDateFormat(dateFormat);
+    }
+
+
+    public static String getDateTimeStr(Date date) {
+        if (date == null) {
+            return null;
         }
-
-
-        public static String getDateTimeStr(Date date) {
-            if (date == null) {
-                return null;
-            }
-            return getSimpleDateFormat().format(date);
-        }
+        return getSimpleDateFormat().format(date);
+    }
 
 
     public static String getCurrentDateMinus60Min() {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT-5"));
         Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(System.currentTimeMillis()-TimeUnit.MINUTES.toMillis(60)));
+        cal.setTime(new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(60)));
         return getDateTimeStr(cal.getTime());
     }
 
-    }
+}

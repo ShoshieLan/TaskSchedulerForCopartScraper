@@ -5,7 +5,9 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
+
 /**
  * Created by slan on 11/7/2017.
  */
@@ -29,6 +31,12 @@ public class Utilities {
 
     }
 
+
+    public static String formatString(String format) {
+
+        String formatted = format.replaceAll("\"", "");
+        return formatted;
+    }
 
 
 }

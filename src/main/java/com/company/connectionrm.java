@@ -1,7 +1,6 @@
 package com.company;
 
 
-import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -54,6 +53,7 @@ public class connectionrm {
         }
 
     }
+
     public static Channel getPublisherChannel() {
 
         return publisherChannel;
