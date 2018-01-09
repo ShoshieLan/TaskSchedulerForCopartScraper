@@ -27,7 +27,7 @@ public class Decider {
 
     private Message message;
 
-    private ArrayList<String> list; 
+    private ArrayList<String> list;
 
     public ArrayList<String> getList() {
         return this.list;

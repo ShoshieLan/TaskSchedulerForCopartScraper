@@ -30,7 +30,7 @@ public class InsertToScraperQue implements Job {
         try {
             if (list != null) {
                 for (int i = 0; i < list.size(); i++) {
-                    publishToQueue("celery", list.get(i) + "" + getCurrentDateMinus60Min());
+                    publishToQueue("celery", list.get(i) + "," + getCurrentDateMinus60Min());
                 }
             }
 
