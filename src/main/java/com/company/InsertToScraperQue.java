@@ -18,12 +18,26 @@ public class InsertToScraperQue implements Job {
 
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) {
+    public void execute(JobExecutionContext jobExecutionContext) throws NullPointerException {
         Decider array = new Decider();
-        ArrayList<String> list = array.getCurrentLotNumbers();
-        for (int i = 0; i < list.size(); i++) {
-            publishToQueue("celery", list.get(i) + "" + getCurrentDateMinus60Min());
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            list = array.getList();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        try {
+            if (list != null) {
+                for (int i = 0; i < list.size(); i++) {
+                    publishToQueue("celery", list.get(i) + "" + getCurrentDateMinus60Min());
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

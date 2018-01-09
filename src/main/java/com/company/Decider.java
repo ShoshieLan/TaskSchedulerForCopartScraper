@@ -16,7 +16,7 @@ import static com.company.SqlUtilityConnection.sqlQueryUpdate;
  */
 public class Decider {
 
-    public Decider(){
+    public Decider() {
 
     }
 
@@ -27,6 +27,10 @@ public class Decider {
     private Message message;
 
     private ArrayList<String> list = getCurrentLotNumbers();
+
+    public ArrayList<String> getList() {
+        return this.list;
+    }
 
     public ArrayList<String> getCurrentLotNumbers() {
         Connection conn = null;
@@ -56,8 +60,8 @@ public class Decider {
 
     public void decide() {
         if ((message.getStatus().equals("Status-TRANSTART") || message.getStatus().equals("Status-TRANSTARTMAN")) && !list.contains(message.getLotnumber())) {
-                list.add(message.getLotnumber());
-                sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes Values('" + message.getLotnumber() + "')");
+            list.add(message.getLotnumber());
+            sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes Values('" + message.getLotnumber() + "')");
         } else if (message.getStatus().equals("Status-SETTLEMENTCMP")) {
             Iterator iterator = list.iterator();
             while (iterator.hasNext()) {

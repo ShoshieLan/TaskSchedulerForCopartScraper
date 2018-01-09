@@ -29,7 +29,6 @@ public class connectionrm {
         try {
             consumerConnection = factory.newConnection();
             consumerChannel = consumerConnection.createChannel();
-            consumerChannel.basicQos(300);
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
 

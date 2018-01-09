@@ -42,11 +42,20 @@ public class consumer implements Consumer, Runnable {
 
         long deliveryTag = envelope.getDeliveryTag();
         byte[] body = bytes;
-        MessageParser parser = new MessageParser();
-        Message message = parser.parseMessage(body);
-        Decider decider = new Decider(message);
-        decider.decide();
-        connectionrm.getConsumerChannel().basicAck(deliveryTag, false);
+        System.out.println(body);
+        try {
+            MessageParser parser = new MessageParser();
+            if(parser.parseMessage(body) !=null){
+                Message message = parser.parseMessage(body);
+                Decider decider = new Decider(message);
+                decider.decide();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        } /*finally {
+            connectionrm.getConsumerChannel().basicAck(deliveryTag, false);
+        }*/
 
     }
 
