@@ -22,11 +22,12 @@ public class Decider {
 
     public Decider(Message message) {
         this.message = message;
+        this.list = getCurrentLotNumbers();
     }
 
     private Message message;
 
-    private ArrayList<String> list = getCurrentLotNumbers();
+    private ArrayList<String> list; 
 
     public ArrayList<String> getList() {
         return this.list;
