@@ -40,9 +40,4 @@ public class MessageParser {
         }
     }
 
-
-    public void something() {
-
-    }
-
 }

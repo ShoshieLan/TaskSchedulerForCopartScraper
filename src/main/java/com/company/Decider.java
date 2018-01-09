@@ -55,11 +55,9 @@ public class Decider {
     }
 
     public void decide() {
-        if (message.getStatus().equals("Status-TRANSTART") || message.getStatus().equals("Status-TRANSTARTMAN")) {
-            if (!list.contains(message.getLotnumber())) {
+        if ((message.getStatus().equals("Status-TRANSTART") || message.getStatus().equals("Status-TRANSTARTMAN")) && !list.contains(message.getLotnumber())) {
                 list.add(message.getLotnumber());
                 sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes Values('" + message.getLotnumber() + "')");
-            }
         } else if (message.getStatus().equals("Status-SETTLEMENTCMP")) {
             Iterator iterator = list.iterator();
             while (iterator.hasNext()) {
