@@ -67,7 +67,7 @@ public class consumer implements Consumer, Runnable {
 
     public void Consume() {
         try {
-            connectionrm.getConsumerChannel().basicConsume("EVENT_GET_COPART_NOTES", false, this);
+            connectionrm.getConsumerChannel().basicConsume("EVENT_GET_COPART_NOTES", true, this);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -81,9 +81,11 @@ public class Decider {
 
     public void decide() {
         System.out.println(message.getStatus());
-        if ((message.getStatus().equals("Status-TRANSTART") || message.getStatus().equals("Status-TRANSTARTMAN")) && isCurrentLotNumber() != null) {
+        if ((message.getStatus().equals("Status-TRANSTART") || message.getStatus().equals("Status-TRANSTARTMAN")) && isCurrentLotNumber() == null) {
             //list.add(message.getLotnumber());
-            sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes Values('" + message.getLotnumber() + "')");
+            String query = "INSERT INTO ArrayListBackupForCopartNotes Values('" + message.getLotnumber() + "')";
+            //System.out.println(query);
+            sqlQueryUpdate(query);
             System.out.println("insert");
         } else if (message.getStatus().equals("Status-SETTLEMENTCMP")) {
             //Iterator iterator = list.iterator();
