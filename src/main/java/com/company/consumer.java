@@ -45,7 +45,7 @@ public class consumer implements Consumer, Runnable {
         System.out.println(body);
         try {
             MessageParser parser = new MessageParser();
-            if(parser.parseMessage(body) !=null){
+            if(parser.parseMessage(body) != null){
                 Message message = parser.parseMessage(body);
                 Decider decider = new Decider(message);
                 decider.decide();
@@ -67,7 +67,7 @@ public class consumer implements Consumer, Runnable {
 
     public void Consume() {
         try {
-            connectionrm.getConsumerChannel().basicConsume("EVENT_GET_COPART_NOTES", true, this);
+            connectionrm.getConsumerChannel().basicConsume("EVENT_GET_COPART_NOTES", false, this);
         } catch (IOException e) {
             e.printStackTrace();
         }

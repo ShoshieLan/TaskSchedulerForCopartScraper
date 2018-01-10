@@ -17,12 +17,12 @@ import static com.company.SqlUtilityConnection.sqlQueryUpdate;
 public class Decider {
 
     public Decider() {
-
+        this.list = getCurrentLotNumbers();
     }
 
     public Decider(Message message) {
         this.message = message;
-        this.list = getCurrentLotNumbers();
+
     }
 
     private Message message;
@@ -31,6 +31,26 @@ public class Decider {
 
     public ArrayList<String> getList() {
         return this.list;
+    }
+
+
+    public String isCurrentLotNumber() {
+        Connection conn = null;
+        Statement st = null;
+        try {
+            String query = "Select top 1 * from ArrayListBackupForCopartNotes where Lotnumber = " + message.getLotnumber();
+            conn = getConn();
+            st = conn.createStatement();
+            ResultSet s = st.executeQuery(query);
+            while (s.next()) {
+                String lotnumber = s.getString("LotNumber");
+                return lotnumber;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public ArrayList<String> getCurrentLotNumbers() {
@@ -60,18 +80,19 @@ public class Decider {
     }
 
     public void decide() {
-        if ((message.getStatus().equals("Status-TRANSTART") || message.getStatus().equals("Status-TRANSTARTMAN")) && !list.contains(message.getLotnumber())) {
-            list.add(message.getLotnumber());
+        System.out.println(message.getStatus());
+        if ((message.getStatus().equals("Status-TRANSTART") || message.getStatus().equals("Status-TRANSTARTMAN")) && isCurrentLotNumber() != null) {
+            //list.add(message.getLotnumber());
             sqlQueryUpdate("INSERT INTO ArrayListBackupForCopartNotes Values('" + message.getLotnumber() + "')");
+            System.out.println("insert");
         } else if (message.getStatus().equals("Status-SETTLEMENTCMP")) {
-            Iterator iterator = list.iterator();
-            while (iterator.hasNext()) {
-                Object arraylot = iterator.next();
-                if (arraylot.equals(message.getLotnumber())) {
-                    iterator.remove();
-                    sqlQueryUpdate("Delete from ArrayListBackupForCopartNotes where lotnumber = " + message.getLotnumber());
-                }
-            }
+            //Iterator iterator = list.iterator();
+            //while (iterator.hasNext()) {
+            //  Object arraylot = iterator.next();
+            //  if (arraylot.equals(message.getLotnumber())) {
+            //    iterator.remove();
+            sqlQueryUpdate("Delete from ArrayListBackupForCopartNotes where lotnumber = " + message.getLotnumber());
+            System.out.println("delete");
         }
     }
 }

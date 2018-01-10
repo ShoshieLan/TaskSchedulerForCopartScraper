@@ -23,7 +23,7 @@ public class MessageParser {
                 copartLotnumber = json.get("LotNumber").toString();
                 String lotnumber = formatString(copartLotnumber);
                 String status = formatString(copartStatus);
-                Message message = new Message(lotnumber, status);
+                Message message = new Message(status, lotnumber);
                 return message;
             }
 
