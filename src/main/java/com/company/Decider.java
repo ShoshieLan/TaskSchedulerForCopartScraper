@@ -17,7 +17,7 @@ import static com.company.SqlUtilityConnection.sqlQueryUpdate;
 public class Decider {
 
     public Decider() {
-        this.list = getCurrentLotNumbers();
+
     }
 
     public Decider(Message message) {
@@ -53,31 +53,7 @@ public class Decider {
         return null;
     }
 
-    public ArrayList<String> getCurrentLotNumbers() {
-        Connection conn = null;
-        Statement st = null;
-        try {
-            String query = "Select distinct * from ArrayListBackupForCopartNotes";
-            conn = getConn();
-            st = conn.createStatement();
-            ResultSet s = st.executeQuery(query);
 
-            try {
-                while (s.next()) {
-                    if (!list.contains(s.getString(1))) {
-                        list.add(s.getString(1));
-                    }
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
 
     public void decide() {
         System.out.println(message.getStatus());

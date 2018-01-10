@@ -5,8 +5,13 @@ import org.quartz.JobExecutionContext;
 
 import static com.company.DateUtils.getCurrentDateMinus60Min;
 import static com.company.Publisher.publishToQueue;
+import static com.company.SqlUtilityConnection.getConn;
 
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 
@@ -17,15 +22,38 @@ import java.util.ArrayList;
 public class InsertToScraperQue implements Job {
 
 
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws NullPointerException {
-        Decider array = new Decider();
-        ArrayList<String> list = new ArrayList<>();
+    ArrayList<String> list = getCurrentLotNumbers();
+
+    public ArrayList<String> getCurrentLotNumbers() {
+        ArrayList<String> list = new ArrayList<String >();
+        Connection conn = null;
+        Statement st = null;
         try {
-            list = array.getList();
-        } catch (Exception e) {
+            String query = "Select distinct * from ArrayListBackupForCopartNotes";
+            conn = getConn();
+            st = conn.createStatement();
+            ResultSet s = st.executeQuery(query);
+
+            try {
+                while (s.next()) {
+                    if (!list.contains(s.getString(1))) {
+                        list.add(s.getString(1));
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return list;
+    }
+
+    @Override
+    public void execute(JobExecutionContext jobExecutionContext) throws NullPointerException {
+
 
         try {
             if (list != null) {
