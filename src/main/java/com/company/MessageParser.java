@@ -18,7 +18,7 @@ public class MessageParser {
         try {
             JsonNode json = mapJsonToMessage(rabbitMessage);
             System.out.println(json);
-            if (!json.isNull()) {
+            if (!json.isNull() && !json.equals(null)) {
                 copartStatus = json.get("CopartStatus").toString();
                 copartLotnumber = json.get("LotNumber").toString();
                 String lotnumber = formatString(copartLotnumber);
