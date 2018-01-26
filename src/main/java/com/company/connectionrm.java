@@ -16,25 +16,6 @@ public class connectionrm {
 
     private static Connection publisherConnection = null;
     private static Channel publisherChannel = null;
-    private static Connection consumerConnection = null;
-    private static Channel consumerChannel = null;
-
-    static {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setUsername("yunion");
-        factory.setPassword("421kirby#");
-        factory.setHost("192.168.1.41");
-        factory.setPort(5672);
-
-        try {
-            consumerConnection = factory.newConnection();
-            consumerChannel = consumerConnection.createChannel();
-        } catch (IOException | TimeoutException e) {
-            e.printStackTrace();
-
-        }
-
-    }
 
 
     static {
@@ -59,10 +40,6 @@ public class connectionrm {
         return publisherChannel;
     }
 
-    public static Channel getConsumerChannel() {
-
-        return consumerChannel;
-    }
 }
 
 

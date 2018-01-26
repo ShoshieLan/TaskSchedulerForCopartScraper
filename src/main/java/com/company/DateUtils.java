@@ -36,4 +36,11 @@ public class DateUtils {
         return getDateTimeStr(cal.getTime());
     }
 
+    public static String getCurrentDateTime() {
+        TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date(System.currentTimeMillis()));
+        return getDateTimeStr(cal.getTime());
+    }
+
 }

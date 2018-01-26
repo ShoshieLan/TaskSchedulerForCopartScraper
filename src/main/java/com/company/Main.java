@@ -16,12 +16,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        consumer consumer = new consumer();
-        Thread thread = new Thread(consumer);
-        thread.start();
-        //ExecutorService executor = Executors.newFixedThreadPool(20);
-        //executor.execute(consumer);
-
         try {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             JobDetail job = newJob(InsertToScraperQue.class)

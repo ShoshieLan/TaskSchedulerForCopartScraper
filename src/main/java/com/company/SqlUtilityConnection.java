@@ -8,31 +8,6 @@ import java.sql.*;
 public class SqlUtilityConnection {
 
 
-    public static void sqlQueryExecuteNonQuery(String query) {
-
-        Connection conn = null;
-        Statement st = null;
-        try {
-            conn = getConn();
-            st = conn.createStatement();
-            st.executeQuery(query);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-
-            try {
-                if (st != null) {
-                    st.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
 
 
     public static Connection getConn() {
@@ -50,7 +25,6 @@ public class SqlUtilityConnection {
         }
         return conn;
     }
-
 
     public static void sqlQueryUpdate(String query) {
         Connection conn = null;
@@ -75,37 +49,6 @@ public class SqlUtilityConnection {
                 ex.printStackTrace();
             }
         }
-    }
-
-    public static ResultSet sqlGetResult(String query) {
-        ResultSet rs = null;
-        Connection conn = null;
-        Statement st = null;
-        try {
-            conn = getConn();
-
-            st = conn.createStatement();
-            System.out.println(query);
-            rs = st.executeQuery(query);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (st != null) {
-                    st.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return rs;
-    }
-
-    public interface executeJob {
-        void func(ResultSet resultSet);
     }
 
 
