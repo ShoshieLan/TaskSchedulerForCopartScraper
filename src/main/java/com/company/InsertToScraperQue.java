@@ -1,12 +1,10 @@
 package com.company;
 
-import net.sourceforge.jtds.jdbc.DateTime;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
-import static com.company.DateUtils.getCurrentDateMinus60Min;
+
 import static com.company.DateUtils.getCurrentDateTime;
-import static com.company.DateUtils.getDateTimeStr;
 import static com.company.LotAndTime.getCurrentLotNumbers;
 import static com.company.Publisher.publishToQueue;
 import static com.company.SqlUtilityConnection.sqlQueryUpdate;
@@ -32,7 +30,7 @@ public class InsertToScraperQue implements Job {
             if (list != null) {
                 for (int i = 0; i < list.size(); i++) {
                     publishToQueue("WORK_GET_COPART_NOTES", list.get(i).getLotnumber() + "," + list.get(i).getLastCheck());
-                    String query = "Update ArrayListBackUpForCopartNotes set LastCheck = "+ getCurrentDateTime() + "where Lotnumber = "+ list.get(i).getLotnumber();
+                    String query = "Update ArrayListBackUpForCopartNotes set LastCheck = " + getCurrentDateTime() + "where Lotnumber = " + list.get(i).getLotnumber();
                     sqlQueryUpdate(query);
                 }
             }

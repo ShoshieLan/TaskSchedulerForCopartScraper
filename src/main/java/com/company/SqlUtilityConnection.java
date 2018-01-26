@@ -8,8 +8,6 @@ import java.sql.*;
 public class SqlUtilityConnection {
 
 
-
-
     public static Connection getConn() {
 
 

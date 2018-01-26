@@ -18,9 +18,13 @@ public class LotAndTime {
     private Date lastCheck;
 
 
+    public String getLotnumber() {
+        return lotnumber;
+    }
 
-    public String getLotnumber(){ return  lotnumber;}
-    public Date getLastCheck(){return  lastCheck;}
+    public Date getLastCheck() {
+        return lastCheck;
+    }
 
     public static ArrayList<LotAndTime> getCurrentLotNumbers() {
         ArrayList<LotAndTime> list = new ArrayList<>();
